@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!--This is a line of code essentially making sure that the website will display properly on all devices-->
+        <link rel="stylesheet" href="packopeningstyle.css"> <!--Code linking my css style sheet to my html-->
+        <title>Pack Opening</title>
+    </head>
+    <body>
+        <div class="button-container"> <!--setting the class for the button container so i can set the background in css-->
+            <a href="home.html"> <!-- creating a button that returns the user to the home page-->
+                <button name="home" id="home"> Return to Home </button>
+            </a>
+        </div>
+        <div class="h1-container">
+            <h1>Pokemon Pack</h1>
+        </div>
+        <div>
+            <audio id="sparkle" src="mixkit-arcade-game-jump-coin-216.wav"></audio><!-- creating an audio and assinging it with an id and the audio file-->
+            <div class="button-container">
+                <button onclick="openPack()" id="packbutton">Open Pack</button>
+            </div>
+        </div>
+        <div id="card-area"></div> <!-- creating a card area div for later use -->
+
+
+        <script>
+            currentCollection = []; //making sure that currentCollection is an array so it isnt Null
+
+            const rarityy = { //defining rarities for the cards
+                "Common": 0.75,
+                "Uncommon": 0.90,
+                "Rare": 0.98,
+                "Ultra": 1.00,
+            };
+
+            function randrarity() { //function to find the rarity
+                const randnum = Math.random();
+
+                if (randnum < rarityy["Common"]) { //very similar to python, if the random number generated is less then the common rarity then it is common, etc. 
+                    return "Common";
+                }
+                else if (randnum < rarityy["Uncommon"]) {
+                    return "Uncommon";
+                }
+                else if (randnum < rarityy["Rare"]) {
+                    return "Rare";
+                }
+                else {
+                    return "Ultra";
+                }
+            };
+
+            const pokemonCards = [ //constant array containing all card names, rarities, and images 
+                { name: "Venesaur", image:"https://storage.googleapis.com/images.pricecharting.com/jw45qdlqbx652hmf/240.jpg", rarity: "Rare" },
+                { name: "Blastoise", image:"https://storage.googleapis.com/images.pricecharting.com/fduultrrfpaofkxz/240.jpg", rarity: "Rare"},
+                { name: "Charizard", image:"https://storage.googleapis.com/images.pricecharting.com/tfd6aj76tqyyw3vd/240.jpg", rarity: "Rare" },
+                { name: "Pikachu", image:"https://storage.googleapis.com/images.pricecharting.com/2c76846e388fbdb37ec785dbf3dc31868e1b4283e5ed670d6ce3e4de3690cc67/240.jpg", rarity: "Common" },
+                { name: "Jigglypuff", image:"https://storage.googleapis.com/images.pricecharting.com/2aded8590eb758d6e39e85dd50b4a3a5e1819bbd81ca4809f54f62e130ad414d/240.jpg", rarity: "Common" },
+                { name: "Abra", image:"https://storage.googleapis.com/images.pricecharting.com/d70ae614ea0bce111bdd0480fbb2350439029d85041bccaf90e343a7d1fcf887/240.jpg", rarity: "Common" },
+                { name: "Magneton", image:"https://storage.googleapis.com/images.pricecharting.com/90a71879c545bc03fb68e55744b2fb845ef4af2c25360b72410d7f8a6f9c3267/240.jpg", rarity: "Uncommon" },
+                { name: "Mew", image:"https://storage.googleapis.com/images.pricecharting.com/581727ff23301b1667abe83850b6880a2b1b8892b96554ad52838458b28c5c0a/240.jpg", rarity: "Uncommon" },
+                { name: "Gengar", image:"https://storage.googleapis.com/images.pricecharting.com/bz35k24srfg6jbvn/240.jpg", rarity: "Common" },
+                { name: "Ditto", image:"https://storage.googleapis.com/images.pricecharting.com/1931b5c5dd67684b244af6b97f97044629cd6df8f040d7eb4d8d3768051a2be2/240.jpg", rarity: "Common" },
+                { name: "Wobbuffet", image:"https://storage.googleapis.com/images.pricecharting.com/acbbdd1b75cd1206a46035dede1024cae2753d41cd4974a3852f82d36401dcfb/240.jpg", rarity: "Common" },
+                { name: "Magcargo", image:"https://storage.googleapis.com/images.pricecharting.com/eb744249485007970a2122c23cfd7d56636c0b4e3597da6b84d3730c3749175d/240.jpg", rarity: "Common" },
+                { name: "Lugia", image:"https://storage.googleapis.com/images.pricecharting.com/8f5089e3fdf8cbc1847df3bbc8d1a3ba1a3ac227a21c149e97cd0f642e252f34/240.jpg", rarity: "Rare" },
+                { name: "Wailord", image:"https://storage.googleapis.com/images.pricecharting.com/4e626bba5603e52ea879f3345b7806a696030413832e79ca545c04e52e343b97/240.jpg", rarity: "Uncommon" },
+                { name: "Latias and Latios", image:"https://storage.googleapis.com/images.pricecharting.com/217829103be294e77186c0f64480936ab787ba91c1ea69bc10bb65722ca2e08b/240.jpg", rarity: "Rare" },
+                { name: "Jirachi", image:"https://storage.googleapis.com/images.pricecharting.com/f2c7ef37d7e7a1c2f875911fb2389562d4e3cf9745c4cc020f2ecfa3fa253020/240.jpg", rarity: "Uncommon" },
+                { name: "Rotom", image:"https://storage.googleapis.com/images.pricecharting.com/93a153ba724d33bd4115cd25cb0cac2da767adb89e3a1fb989d0db7bd7325687/240.jpg", rarity: "Common" },
+                { name: "Cofarigus", image:"https://storage.googleapis.com/images.pricecharting.com/oecgjefclt4igcv2/240.jpg", rarity: "Common" },
+                { name: "Wishiwashi", image:"https://storage.googleapis.com/images.pricecharting.com/e3bb18a7a94d3f0a7c772f1b33b423317a3ef16226a778cb953556ff287d6597/240.jpg", rarity: "Common" },
+                { name: "Mimikyu", image:"https://storage.googleapis.com/images.pricecharting.com/3a36c2ecc32cba9110a1122524c2f773641b53c2befd2b84a4e36f3148bff8d1/240.jpg", rarity: "Common" },
+                { name: "Xurkitree", image:"https://storage.googleapis.com/images.pricecharting.com/1101ee07e9efc2fedfa6b706347b5463d846550cbb57357a367974067555be33/240.jpg", rarity: "Rare" },
+                { name: "Applin", image:"https://storage.googleapis.com/images.pricecharting.com/kgjtubydn5tsrcgt/240.jpg", rarity: "Common" },
+                { name: "Toxel", image:"https://storage.googleapis.com/images.pricecharting.com/aafed67469674e1fe09f8b1fb6cb4b8d786a6d84d6ac85560ae6501219ea38fa/240.jpg", rarity: "Common" },
+                { name: "Regieleki", image:"https://storage.googleapis.com/images.pricecharting.com/50c98e1f2c39455dcfcbb05e3c7ddf336f4b04d83df1720d58f5dfd017e98b61/240.jpg", rarity: "Rare" },
+                { name: "Maushold", image:"https://storage.googleapis.com/images.pricecharting.com/70fd21352680c24483ba80c0e662340d1805db861fb394537f89b093d9be513b/240.jpg", rarity: "Common" },
+                { name: "Ceruledge", image:"https://storage.googleapis.com/images.pricecharting.com/bba0fd0addae3cfb285cab20a0d9a821adbb0c71e4b64c043f3aaa1f82b4fa3b/240.jpg", rarity: "Uncommon" },
+                { name: "Wiglett", image:"https://storage.googleapis.com/images.pricecharting.com/b744b9aa94f5e4df19bb7fafdb65d912629a5b84b284fc9d4743e268ac0bd725/240.jpg", rarity: "Common" },
+                { name: "Roaring Moon", image:"https://storage.googleapis.com/images.pricecharting.com/75ed000c7adbf6ec39ecbc9886f5cdef7ddfa43f334a5cd89999be19e85e16d1/240.jpg", rarity: "Rare" },
+                { name: "Miraidon", image:"https://storage.googleapis.com/images.pricecharting.com/27gbe5jjyu52v5ue/240.jpg", rarity: "Rare" },
+                { name: "Chi Yu", image:"https://storage.googleapis.com/images.pricecharting.com/fvbtpdnf3egnvgir/240.jpg", rarity: "Uncommon" },
+                { name: "Pikachu ex", image:"https://storage.googleapis.com/images.pricecharting.com/nu6mlfz4knn7uwl7/240.jpg", rarity: "Ultra"},
+                { name: "Charizard V", image:"https://storage.googleapis.com/images.pricecharting.com/8fa1e84e73976883fb4ee773a17932cd8f98d20e34c905feec018ac5fef8190e/240.jpg", rarity: "Ultra"},
+                { name: "Abra ex", image:"https://storage.googleapis.com/images.pricecharting.com/f75f1667a3a3a3de9ff4742743118aab1e12a7f49ef21b8a98679562b4e4d962/240.jpg", rarity: "Ultra"},
+                { name: "Mew ex", image:"https://storage.googleapis.com/images.pricecharting.com/741c562c629f44c6f16cec378fae53d9e2246cddd9bed7e96a814e84d1294aa7/240.jpg", rarity: "Ultra"},
+                { name: "Ditto ex", image:"https://storage.googleapis.com/images.pricecharting.com/fa694b71646ada79c4226bee74488a7e81ca2f477ae1ce993fd8862b9b02f433/240.jpg", rarity: "Ultra"},
+                { name: "Rotom ex", image:"https://storage.googleapis.com/images.pricecharting.com/70b6d29a5ea83424c230a887a81ec373e7f20b5e00839a6483bdb5169ff4fb58/240.jpg", rarity: "Ultra"},
+                { name: "Cofarigus ex", image:"https://storage.googleapis.com/images.pricecharting.com/b2e09ca7638d67edfedbbb674fe3adb492abffb2f50a0a22ca018162d52b6d23/240.jpg", rarity: "Ultra"},
+                { name: "Mimikyu ex", image:"https://storage.googleapis.com/images.pricecharting.com/0b3eef3fcd68c0822ed447cccc715b1b3149c760ef1d8928a6726b52c59b4b49/240.jpg", rarity: "Ultra"},
+                { name: "Xurkitree ex", image:"https://storage.googleapis.com/images.pricecharting.com/fabd040bfd338f1651217c8061201dc9ce51e3730f0318ea8606cf79765b6826/240.jpg", rarity: "Ultra"},
+                { name: "Regieleki ex", image:"https://storage.googleapis.com/images.pricecharting.com/065f8a1a23057555e47d8782895f09e7b68750dc0f0946b1dc3764a8085f23c4/240.jpg", rarity: "Ultra"},
+                { name: "Roaring Moon ex", image:"https://storage.googleapis.com/images.pricecharting.com/msgsjjskgxgnpn2b/240.jpg", rarity: "Ultra"},
+                { name: "Miraidon ex", image:"https://storage.googleapis.com/images.pricecharting.com/dbdfad283bd0056379d35f3065622469cca229634149b21be3f0cdd5b5b9fc14/240.jpg", rarity: "Ultra"},
+                { name: "Mr Valencia EX", image:"https://m.media-amazon.com/images/I/61ISTvTWPRL._AC_UF894,1000_QL80_.jpg", rarity: "Ultra"}
+            ]
+
+
+
+            function openPack() { //function for opening a pack
+                var sound = document.getElementById('sparkle') //fetching the noise we defined in the html earlier 
+                sound.play(); //playing said sound
+                const numCards = 5; 
+                const pack = []; //defining the pack as an empty array
+                let currentCollection = JSON.parse(sessionStorage.getItem('pokemonCollection')) //attempting to retrieve the value associated with pokemonCollection from the session storage, and converting the json string into a javascript object
+                if (!currentCollection) { //yet again double checking that currentCollection isnt null, and if it is, setting it to an array
+                    currentCollection = [];
+                }
+
+
+                for (let i = 0;i < numCards; i++) { //a for loop, letting i = 0 at the very start and adding one to i everytime it loops until i is greater then the number of cards i set, or 5
+                const rarity = randrarity(); //running the function to find the rarity 
+                const cardsrarity = pokemonCards.filter(card => card.rarity === rarity) //setting the constant of cardsrarity too an array of cards from the big array of all the cards that match the rarity that was rolled in the rarity function
+                const randomIndex = Math.floor(Math.random() * cardsrarity.length); //generating a random number within the amount of cards in the cardsrarity array
+                const pulledCard = cardsrarity[randomIndex]; //pulling the card number from the cardsrarity array that the randomIndex generated 
+                pack.push(pulledCard); //pushing the pulled card 
+                currentCollection.push(pulledCard); //pushing the pulled card to the collection
+                 }
+
+                sessionStorage.setItem('pokemonCollection', JSON.stringify(currentCollection)); //saves the users current collection to the sessionstorage 
+                displayPack(pack); //runs the display pack function
+            };
+
+            function displayPack(pack) {
+                const cardArea = document.getElementById("card-area"); //searches html document for object with card-area id and makes that cardArea
+                cardArea.innerHTML = "";   //sets the element to an empty string to prepare for new data
+
+                pack.forEach(card => { //for each card
+                    const cardDiv = document.createElement("div"); //creating a div html object through javascript
+                    cardDiv.className = "card"; //assining the class "card" to the cardDiv for css styling
+
+                    const image = document.createElement("img"); //creating an html img 
+                    image.src = card.image; //setting the image to the image in the card info array
+                    image.alt = card.name;
+                    cardDiv.appendChild(image); //appending the image to the cardDiv html object 
+
+                    const nameLabel = document.createElement("p"); //doing the same as the image but for the card name
+                    nameLabel.textContent = card.name;
+                    nameLabel.className = "name";
+                    cardDiv.appendChild(nameLabel)
+
+                    const rarityLabel = document.createElement("p"); //doing the same as the image but for the card rarity
+                    rarityLabel.textContent = card.rarity;
+                    rarityLabel.className = "rarity";
+                    cardDiv.appendChild(rarityLabel);
+                    
+                    cardArea.appendChild(cardDiv); //adding the div that was created to the card area 
+                
+                
+
+
+                });
+            };
+
+
+
+        </script>
+       <div class="wrapper"> <!--for the cool background : )-->
+        <div class="box">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    </body>
+</html>
+

@@ -1,0 +1,17 @@
+#ceruledge{
+    display: block;
+    margin: auto;
+    width: 50%;
+  }
+#ceruledge:hover {
+    transform: scaleX(-1);
+  }
+#home{
+    position:right;
+    font-size: 30px;
+    font-family: luminari , impact, fantasy;
+    font-style:bold;
+    font-style:italic;
+    border-radius: 12px
+
+}

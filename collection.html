@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="collectionstyle.css">
+        <title>
+            collection page
+        </title>
+    </head>
+    <body> 
+        <div class="button-container"></div>
+            <a href="home.html">
+                <button name="home" id="home"> Return to Home </button>
+            </a>
+        </div>
+
+        <h1>Collection</h1>
+
+        <div id="collectiondisplay" class="cardcontainer"></div>
+
+
+
+        <script>
+            const collectionArea = document.getElementById('collectiondisplay') //setting the const collectionArea to the div that was created in html
+            const collectedCards = JSON.parse(sessionStorage.getItem('pokemonCollection')) || []; //retrieving the users current collection from the session storage and setting it to an empty array if there is nothing there
+
+            if (collectedCards.length > 0) { //if there are cards in the collection
+                collectedCards.forEach(card => {
+                    const cardDiv = document.createElement('div'); //the exact same code from the packopening 
+                    cardDiv.className = 'card';
+
+                    const image = document.createElement("img");
+                    image.src = card.image;
+                    image.alt = card.name;
+                    cardDiv.appendChild(image);
+
+                    const nameLabel = document.createElement("p");
+                    nameLabel.textContent = card.name;
+                    nameLabel.className = "name";
+                    cardDiv.appendChild(nameLabel)
+
+                    const rarityLabel = document.createElement("p");
+                    rarityLabel.textContent = card.rarity;
+                    rarityLabel.className = "rarity";
+                    cardDiv.appendChild(rarityLabel);
+                    
+                    collectionArea.appendChild(cardDiv);
+                })
+            } else { //if there are no cards
+                collectionArea.textContent = 'open some packs bucko'; //display this message for that bucko to open some packs 
+            }
+            
+        </script>
+    
+       
+
+        
+
+
+
+
+    </body>
+</html>
